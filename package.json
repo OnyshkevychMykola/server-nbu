@@ -1,0 +1,20 @@
+{
+  "name": "nbu-coin-soft",
+  "version": "1.2.8",
+  "author": "OBR innovation",
+  "description": "A program for launching software for buying coins",
+  "main": "src/browser-task.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.js",
+    "build": "npm install --production",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "node-fetch": "^3.3.2",
+    "puppeteer-real-browser": "^1.4.2"
+  }
+}
