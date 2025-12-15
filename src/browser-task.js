@@ -1,11 +1,16 @@
 import {connect} from "puppeteer-real-browser";
+import dotenv from 'dotenv';
 import EventEmitter from "events";
 const fetch = (...args) => import('node-fetch').then(({default: f}) => f(...args));
 
-
-export async function runMonitoring(site, rawCoins, rawUsers, coinCheckUrl) {
+dotenv.config();
+const site = process.env.SITE_LINK
+const rawCoins = process.env.COINS;
+const rawUsers = process.env.ACCOUNTS;
+const coinCheckUrl = process.env.COIN_CHECK;
 let IS_SECURE_CONNECTION_ENABLED = true;
 const coinEmitter = new EventEmitter();
+
 const coins = !rawCoins
     ? []
     : rawCoins.includes(',')
@@ -152,7 +157,7 @@ async function findAndBuyCoin(page, coinId, email) {
   }
 }
 
-async function monitorPageForSingleCoin(page, browser, email, coinId) {
+export async function monitorPageForSingleCoin(page, browser, email, coinId) {
   console.log(`🚀 [${email}] Стартуємо моніторинг монети ${coinId}...`);
 
   await findAndBuyCoin(page, coinId, email);
@@ -165,21 +170,12 @@ async function monitorPageForSingleCoin(page, browser, email, coinId) {
 }
 
 
+async function runMonitoring(coinId) {
 
-  const coinId = coins;
   const sessions = [];
 
   for (const { email, password } of users) {
-    const { browser, page } = await connect({
-      headless: true,
-      executablePath: process.env.CHROME_PATH,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu'
-      ]
-    });
+    const { browser, page } = await connect({ headless: false, args: ["--start-maximized"] });
 
     await page.setViewport({ width: 1920, height: 1080 });
     await performLogin(page, email, password);
@@ -221,3 +217,5 @@ async function monitorPageForSingleCoin(page, browser, email, coinId) {
 
   console.log("🎉 Усі акаунти завершили роботу.");
 }
+
+runMonitoring(coins);

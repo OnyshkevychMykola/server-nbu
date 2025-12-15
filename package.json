@@ -7,13 +7,12 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "node src/server.js",
+    "dev": "node src/browser-task.js",
     "build": "npm install --production",
-    "start": "node src/server.js"
+    "start": "node src/browser-task.js"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
-    "express": "^5.2.1",
     "node-fetch": "^3.3.2",
     "puppeteer-real-browser": "^1.4.2"
   }
