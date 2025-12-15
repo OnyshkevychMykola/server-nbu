@@ -170,7 +170,16 @@ async function monitorPageForSingleCoin(page, browser, email, coinId) {
   const sessions = [];
 
   for (const { email, password } of users) {
-    const { browser, page } = await connect({ headless: false, args: ["--start-maximized"] });
+    const { browser, page } = await connect({
+      headless: true,
+      executablePath: process.env.CHROME_PATH,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu'
+      ]
+    });
 
     await page.setViewport({ width: 1920, height: 1080 });
     await performLogin(page, email, password);
